@@ -152,6 +152,8 @@ frontend/node_modules
 *.iml
 
 
+./.idea
+
 # testing
 /coverage
 
