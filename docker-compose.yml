@@ -1,0 +1,26 @@
+version: "3.9"
+
+volumes:
+  database: {}
+
+services:
+  db:
+    image: postgres:alpine
+    container_name: saerix-postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - database:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+  backend:
+    container_name: saerix-backend
+    build: ./app
+    volumes:
+      - ./app:/code
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+    depends_on:
+      - db
