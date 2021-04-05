@@ -24,3 +24,12 @@ services:
       - ./.env
     depends_on:
       - db
+  frontend:
+    container_name: saerix-frontend
+    build: ./frontend
+    volumes:
+      - ./frontend:/src
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
