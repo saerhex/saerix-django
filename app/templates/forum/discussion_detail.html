@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}
+Discussion {{ discussion.title }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 card mb-5 left top">
+      <div class="card-body">
+        <h1>
+          {{ discussion.title }}
+        </h1>
+        <p class=" text-muted">
+          {{ discussion.user }} | {{ discussion.created_on }}
+        </p>
+        <p class="card-text ">
+          {{ discussion.description | safe }}
+        </p>
+
+        {% for message in discussion.messages.all %}
+        <h1>
+          {{ message.user }} -> {{ message.text }}
+        </h1>
+        {% empty %}
+        <p>no messages yet</p>
+        {% endfor %}
+
+        <a href="{% url 'forum' %}" class="btn btn-primary mt-4">
+          Back to forum &larr;
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
