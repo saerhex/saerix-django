@@ -9,6 +9,6 @@ urlpatterns = [path('__debug__/', include(debug_toolbar.urls)),
                path('', include('accounts.urls')),
                path('', include('gallery.urls')),
                path('', include('articles.urls')),
-               path('', include('forum.urls'))
+               path('forum/', include('forum.urls'))
                ] + static(settings.STATIC_URL,
                           document_root=settings.STATIC_ROOT)

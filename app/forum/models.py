@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from ckeditor.fields import RichTextField
 
 User = get_user_model()
 
@@ -30,7 +31,7 @@ class Message(models.Model):
                                    on_delete=models.CASCADE,
                                    db_index=True)
     created_on = models.DateTimeField(auto_now_add=True)
-    text = models.TextField(max_length=5000)
+    text = RichTextField(null=False, blank=False)
 
     def __str__(self):
         return f"{self.user} commented on {self.discussion.title[:10]}..."

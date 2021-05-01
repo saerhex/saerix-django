@@ -23,6 +23,7 @@ INSTALLED_APPS = [
 
     # third-party
     'crispy_forms',
+    'ckeditor',
     'debug_toolbar',
 
     'gallery',
@@ -127,8 +128,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media_cdn')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = "/home"
-LOGOUT_REDIRECT_URL = "/home"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-secondary',
@@ -137,10 +138,6 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
-
-INTERNAL_IPS = [
-    '178.127.4.190'
-]
 
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda _request: DEBUG

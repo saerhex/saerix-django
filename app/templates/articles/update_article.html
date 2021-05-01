@@ -3,30 +3,38 @@
 
 {% block content %}
 
-<h4 class="text-center display-4 text-uppercase">Update article
-    "{{ article.title }}"</h4>
-<div class="d-flex justify-content-center">
+<div class="mt-3 card card-bg-dark col-md-8">
+  <h4 class="text-center text-uppercase text-dark-big mt-4">
+    Update article "{{ article.title }}"
+  </h4>
+  <div class="d-flex justify-content-center mb-4">
     <div class="col-md-8">
-        <form method="POST" class="form-group">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="titleArea">Title</label>
-                <input type="text"
-                       class="form-control"
-                       name="title"
-                       id="titleArea"
-                       value="{{ article.title }}"/>
-            </div>
-            <div class="form-group">
-                <label for="textArea">Text</label>
-                <textarea name="text"
-                          class="form-control"
-                          id="textArea"
-                          rows="10">{{ article.text }}
-        </textarea>
-            </div>
-            <button class="btn btn-success">Update</button>
-        </form>
+      <form method="POST" class="form-group">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="text-dark"
+                 for="titleArea">
+            Title
+          </label>
+          <input type="text"
+                 class="form-control"
+                 name="title"
+                 id="titleArea"
+                 value="{{ article.title }}"/>
+        </div>
+        <div class="form-group">
+          <label class="text-dark"
+                 for="textArea">
+            Text
+          </label>
+          <textarea name="text"
+                    class="form-control"
+                    id="textArea"
+                    rows="10">{{ article.text }}</textarea>
+        </div>
+        <button class="btn btn-success">Update</button>
+      </form>
     </div>
+  </div>
 </div>
 {% endblock %}

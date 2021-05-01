@@ -1,0 +1,9 @@
+<form action="{% url 'forum:detail' discussion.pk %}"
+      method="POST">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="textArea">Message text</label>
+    <textarea name="text" class="form-control" id="textArea" rows="4"></textarea>
+  </div>
+  <button class="btn btn-success">Send</button>
+</form>

@@ -2,9 +2,7 @@ from django import forms
 from . import models
 
 
-class CreateInDiscussion(forms.ModelForm):
+class CreateMessage(forms.ModelForm):
     class Meta:
-        model = models.Discussion
-        fields = ('user',
-                  'title',
-                  'description')
+        model = models.Message
+        fields = ('text', )
