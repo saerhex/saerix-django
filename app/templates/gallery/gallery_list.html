@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %} Gallery {% endblock %}
+
+{% load url_tags %}
+{% block content %}
+<div class="container col-md-12 mt-5 d-flex flex-column justify-content-between card card-bg-light px-5">
+  <div class="d-flex justify-content-center align-items-center mt-5">
+    <form class="mb-5 col-md-8"
+          action="{% url 'gallery:list' %}">
+      <div class="form-group">
+        <label class="text-black-low"
+               for="searchTitle">Search for title or tag</label>
+        <input type="text"
+               name="search"
+               class="form-control"
+               id="searchTitle"
+               placeholder="Enter title or tag">
+      </div>
+      <button type="submit"
+              class="btn btn-blue text-white text-uppercase">
+        Search
+      </button>
+    </form>
+  </div>
+  <div class="d-flex justify-content-center my-5">
+    <div class="col-md-10 d-flex align-items-center flex-wrap">
+      {% for publication in publications %}
+      <div class="mx-3">
+        <a class="no-dec"
+           href="{% url 'gallery:detail' publication.pk %}">
+          <img class="rounded-img-30" src="{{ publication.images.first.thumbnail.url }}" width="200"/>
+          <p class="my-2 text-black no-dec">
+            {% if publication.title|length < 25 %}
+            {{ publication.title }}
+            {% else %}
+            {{ publication.title|slice:"0:25" }}...
+            {% endif %}
+          </p>
+        </a>
+        <p class="mb-2 text-blue">
+          by {{ publication.user }}
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+  {% block pagination %}
+  {% if is_paginated %}
+  <div class="my-5 d-flex justify-content-between">
+    {% if page_obj.has_previous %}
+    <a class="btn btn-blue text-white"
+       href="?{% url_replace page=page_obj.previous_page_number %}">
+      <i class="fas fa-angle-left"></i>
+      Back
+    </a>
+    {% else %}
+    <a class="btn btn-blue text-white disabled"
+       href="">
+      <i class="fas fa-angle-left"></i>
+      Back
+    </a>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <a class="btn btn-blue text-white"
+       href="?{% url_replace page=page_obj.next_page_number %}">
+      <i class="fas fa-angle-right"></i>
+      Next
+    </a>
+    {% else %}
+    <a class="btn btn-blue text-white disabled"
+       href=""
+       disabled>
+      <i class="fas fa-angle-right"></i>
+      Next
+    </a>
+    {% endif %}
+  </div>
+  {% endif %}
+  {% endblock %}
+</div>
+{% endblock %}

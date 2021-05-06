@@ -7,61 +7,72 @@
 {% block content %}
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-12 mt-3 card card-bg-dark">
-            <div class="card-body">
-                <h1>
-                </h1>
-                <p class=" text-muted">
-                    {{ article.user }} | {{ article.created_on }}
-                </p>
-                <p class="card-text ">
-                    {{ article.text | safe }}
-                </p>
-                {% if user.is_authenticated %}
-                <div class="d-flex justify-content-start">
-                    <form action="{% url 'vote' article.pk 'like' %}"
-                          method='POST'>
-                        {% csrf_token %}
-                        <button {% if vote %}
-                                {% if vote.mark == 1 %}
-                                class="btn btn-success"
-                                {% else %}
-                                class="btn btn-dark"
-                                {% endif %}
-                                {% else %}
-                                class="btn btn-dark"
-                                {% endif %}
-                                type='submit'>
-                            <i class="fas fa-thumbs-up"></i>
-                            {{ article.likes }}
-                        </button>
-                    </form>
-                    <form action="{% url 'vote' article.pk 'dislike' %}"
-                          method='POST' class="ml-2">
-                        {% csrf_token %}
-                        <button {% if vote %}
-                                {% if vote.mark == 0 %}
-                                class="btn btn-danger"
-                                {% else %}
-                                class="btn btn-dark"
-                                {% endif %}
-                                {% else %}
-                                class="btn btn-dark"
-                                {% endif %}
-                                type='submit'>
-                            <i class="fas fa-thumbs-down"></i>
-                            {{ article.dislikes }}
-                        </button>
-                    </form>
+  <div class="row">
+    <div class="col-md-12 mt-3 card card-bg-dark">
+      <div class="card-body">
+        <h1>
+        </h1>
+        <p class=" text-muted">
+          {{ article.user }} | {{ article.created_on }}
+        </p>
+        <p class="card-text ">
+          {{ article.text | safe }}
+        </p>
+        {% if user.is_authenticated %}
+        <div class="d-flex justify-content-start">
+          <form action="{% url 'articles:vote' article.pk 'like' %}"
+                method='POST'>
+            {% csrf_token %}
+            <button {% if vote %}
+                    {% if vote.mark == 1 %}
+                    class="btn btn-success"
+                    {% else %}
+                    class="btn btn-dark"
                     {% endif %}
-                </div>
-                <a href="{% url 'articles' %}" class="btn btn-primary mt-4">
-                    Back to articles &larr;
-                </a>
-            </div>
+                    {% else %}
+                    class="btn btn-dark"
+                    {% endif %}
+                    type='submit'>
+              <i class="fas fa-thumbs-up"></i>
+              {{ article.likes }}
+            </button>
+          </form>
+          <form action="{% url 'articles:vote' article.pk 'dislike' %}"
+                method='POST' class="ml-2">
+            {% csrf_token %}
+            <button {% if vote %}
+                    {% if vote.mark == 0 %}
+                    class="btn btn-danger"
+                    {% else %}
+                    class="btn btn-dark"
+                    {% endif %}
+                    {% else %}
+                    class="btn btn-dark"
+                    {% endif %}
+                    type='submit'>
+              <i class="fas fa-thumbs-down"></i>
+              {{ article.dislikes }}
+            </button>
+          </form>
         </div>
+        {% else %}
+        <div class="d-flex justify-content-start">
+          <button type="button" class="btn btn-dark mr-2 disabled">
+            <i class="fas fa-thumbs-up"></i>
+            {{ article.likes }}
+          </button>
+          <button type="button" class="btn btn-dark disabled">
+            <i class="fas fa-thumbs-down"></i>
+            {{ article.dislikes }}
+          </button>
+        </div>
+        {% endif %}
+        <a href="{% url 'articles:list' %}" class="btn btn-blue mt-4">
+          Back to articles &larr;
+        </a>
+      </div>
     </div>
+  </div>
 </div>
 
 {% endblock %}

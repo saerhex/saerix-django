@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block title %}
+Publication {{ publication.title }}
+{% endblock %}
+
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 card my-5 left top card-bg-dark">
+      <div class="card-body">
+        <a href="{% url 'gallery:list' %}" class="text-blue text">
+          &larr;Back to publications
+        </a>
+        <div class="mt-3 d-flex align-items-center flex-column">
+          {% for image in publication.images.all %}
+          <img src="{{ image.image.url }}" width="700"/>
+          {% endfor %}
+          <div class="d-flex col-md-6 justify-content-start flex-column">
+            <p class="text-dark-big mt-5 low-text">
+              {{ publication.title }}
+            </p>
+            <p class="h6 mb-5 text-blue ultra-bold">
+              by {{ publication.user }}
+            </p>
+            <p class="text-dark my-1">
+              {{ publication.description|safe }}
+            </p>
+            <div class="d-flex flex-row">
+              {% for tag in publication.tags.all %}
+              <a href="{% url 'gallery:list' %}?search={{ tag.name }}"
+                 class="text-blue mr-2">
+                #{{ tag.name }}
+              </a>
+              {% endfor %}
+            </div>
+            <p class="h6 my-3 text-black-low">
+              {{ publication.created_on }}
+            </p>
+            <button type="button"
+                    class="btn btn-danger mt-5"
+                    data-toggle="modal"
+                    data-target="#publicationModal">
+              Delete
+            </button>
+
+            <div class="modal fade"
+                 id="publicationModal"
+                 tabindex="-1"
+                 role="dialog"
+                 aria-labelledby="pubModalLabel"
+                 aria-hidden="true">
+              <div class="modal-dialog"
+                   role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="pubModalLabel">
+                      Are you sure?
+                    </h5>
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure you wanna delete "{{ publication.title }}" publication?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <form action="{% url 'gallery:delete' pk=publication.pk %}"
+                          method="POST">
+                      {% csrf_token %}
+                      <button type="submit"
+                              class="btn btn-danger">
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5 class="text-black mt-5 mb-3">
+          Commentaries:
+        </h5>
+
+        {% for commentary in publication.commentaries.all %}
+        <div class="border-bottom card card-bg-light border-dark my-2">
+          <div class="my-1 ml-3">
+            <div class="d-flex flex-column my-3">
+              <p class="text-black-low">
+                {{ commentary.user }}
+              </p>
+              <p class="text-gray-small">
+                {{ commentary.created_on|naturaltime }}
+              </p>
+            </div>
+            <p class="text-dark-light">
+              {{ commentary.text|safe }}
+            </p>
+          </div>
+        </div>
+        {% empty %}
+        <div class="text-center">
+          <p>no commentaries yet</p>
+        </div>
+        {% endfor %}
+
+        {% if user.is_authenticated %}
+        <div class="d-flex justify-content-center">
+          <form class="form-group"
+                action="{% url 'gallery:detail' publication.pk %}"
+                method="POST">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form|crispy }}
+            <button class="btn btn-blue text-white" type="submit">Send</button>
+          </form>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

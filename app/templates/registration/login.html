@@ -8,11 +8,15 @@ Login
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form method="post" class="form-group">
-    {% csrf_token %}
-    {{form|crispy}}
-    <p>Don't have an accoount? Create one
+<div class="mt-3 card col-md-5 card-bg-light">
+  <div class="d-flex justify-content-center my-5">
+    <form method="post" class="form-group col-md-8">
+      {% csrf_token %}
+      {{form|crispy}}
+      <p>Don't have an accoount? Create one
         <a href="{% url 'register' %}">here</a></p>
-    <button type="submit" class="btn btn-success">Login</button>
-</form>
+      <button type="submit" class="btn btn-blue">Login</button>
+    </form>
+  </div>
+</div>
 {% endblock %}

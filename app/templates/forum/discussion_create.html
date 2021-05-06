@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}
+Add discussion
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="card col-md-8 mt-3 card-bg-light">
+  <p class="text-center text-uppercase mt-3 text-dark-big">Create article</p>
+  <div class="d-flex justify-content-center">
+    <div class="col-md-8 mb-4">
+
+      <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-blue"
+                type="submit">
+          Create
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

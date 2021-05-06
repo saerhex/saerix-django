@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Q, F
+from django.db.models import Count, Q
+from django.urls import reverse_lazy
 from django.views import generic
 from django.shortcuts import (render, redirect, get_object_or_404)
 from . import models
@@ -14,24 +15,25 @@ class ArticleList(generic.ListView):
         .all() \
         .order_by('-created_on')
     template_name = 'articles/articles.html'
+    paginate_by = 15
 
 
 def article_detail_view(request, pk):
     context = {}
     article = models.Article.objects \
         .select_related('user') \
-        .annotate(likes=Count('feedbacks',
-                              filter=Q(feedbacks__mark=1)),
-                  dislikes=Count('feedbacks',
-                                 filter=Q(feedbacks__mark=0))) \
+        .annotate(likes=Count('feedbacks', filter=Q(feedbacks__mark=1)),
+                  dislikes=Count('feedbacks', filter=Q(feedbacks__mark=0))) \
         .get(pk=pk)
     context['article'] = article
-    try:
-        feedback = models.Feedback.objects.get(user=request.user,
-                                               article=article)
-        context['vote'] = feedback
-    except models.Feedback.DoesNotExist:
-        pass
+    if request.user.is_authenticated:
+        try:
+            feedback = models.Feedback.objects \
+                .get(user=request.user,
+                     article=article)
+            context['vote'] = feedback
+        except models.Feedback.DoesNotExist:
+            pass
     return render(request, 'articles/articles_detail.html', context=context)
 
 
@@ -47,17 +49,20 @@ def add_vote(request, pk, vote):
     user = request.user
     article = models.Article.objects.get(pk=pk)
     try:
-        vote = models.Feedback.objects.get(user=user, article=article)
+        vote = models.Feedback.objects \
+            .get(user=user,
+                 article=article)
         if vote.mark == mark:
             vote.delete()
         else:
             vote.mark = mark
             vote.save()
     except models.Feedback.DoesNotExist:
-        vote = models.Feedback.objects.create(user=user, article=article,
-                                              mark=mark)
+        vote = models.Feedback.objects \
+            .create(user=user, article=article,
+                    mark=mark)
         vote.save()
-    return redirect('articles-detail', pk=pk)
+    return redirect(reverse_lazy('articles:detail', kwargs={'pk': pk}))
 
 
 @login_required
@@ -74,7 +79,8 @@ def add_article_view(request):
             article = form.save()
             article.save()
             messages.success(request, 'Created article successfully!')
-            return redirect('articles-detail', pk=article.pk)
+            return redirect(reverse_lazy('articles:detail',
+                                         kwargs={'pk': article.pk}))
     else:
         form = forms.AddArticleForm()
 
@@ -92,7 +98,7 @@ def delete_article_view(request, pk):
     else:
         messages.error(request, 'You don\'t have permission '
                                 'to delete this article!')
-        return redirect('home')
+        return redirect(reverse_lazy('gallery:list'))
 
 
 @login_required
@@ -112,11 +118,11 @@ def update_article_view(request, pk):
                 article.text = new_text
                 article.save()
                 messages.success(request, 'Updated article successfully')
-                return redirect('articles')
+                return redirect(reverse_lazy('articles:list'))
             else:
                 context['article'] = article
         return render(request, 'articles/update_article.html', context=context)
     else:
         messages.error(request, 'You don\'t have permission '
                                 'to update this article!')
-        return redirect('home')
+        return redirect(reverse_lazy('gallery:list'))
