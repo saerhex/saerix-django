@@ -15,6 +15,7 @@ class Discussion(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        db_table = 'Discussions'
         ordering = ['-created_on']
 
     def __str__(self):
@@ -33,5 +34,30 @@ class Message(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     text = RichTextField(null=False, blank=False)
 
+    class Meta:
+        db_table = 'Messages'
+
     def __str__(self):
         return f"{self.user} commented on {self.discussion.title[:10]}..."
+
+
+class DiscussionsDeleted(models.Model):
+    user = models.IntegerField()
+    title = models.CharField(max_length=100)
+    description = models.TextField(max_length=5000, null=True)
+    deleted_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Discussions deleted'
+        db_table = 'DiscussionsDeleted'
+
+
+class MessagesDeleted(models.Model):
+    user = models.IntegerField()
+    discussion = models.CharField(max_length=200)
+    deleted_on = models.DateTimeField(auto_now_add=True)
+    text = RichTextField(null=False, blank=False)
+
+    class Meta:
+        verbose_name_plural = 'Messages deleted'
+        db_table = 'MessagesDeleted'

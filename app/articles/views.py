@@ -94,7 +94,7 @@ def delete_article_view(request, pk):
     if article.user == user or user.is_superuser:
         article.delete()
         messages.success(request, 'Deleted article successfully!')
-        return redirect('articles')
+        return redirect(reverse_lazy('articles:list'))
     else:
         messages.error(request, 'You don\'t have permission '
                                 'to delete this article!')

@@ -60,15 +60,16 @@ Discussions
           </div>
           {% if discussion.user == user or user.is_superuser %}
           <div class="d-flex flex-column justify-content-between">
-            <button type="button" class="btn btn-danger mt-3" data-toggle="modal" data-target="#exampleModal">
+            <button type="button" class="btn btn-danger mt-3" data-toggle="modal" data-target="#discussionDelete{{ discussion.id }}">
               Delete
             </button>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="discussionDelete{{ discussion.id }}" tabindex="-1" role="dialog"
+                 aria-labelledby="discussionDeleteLabeld" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                    <h5 class="modal-title" id="discussionDeleteLabel">Are you sure?</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>

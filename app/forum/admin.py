@@ -3,6 +3,8 @@ from . import models
 
 
 admin.site.register(models.Message)
+admin.site.register(models.MessagesDeleted)
+admin.site.register(models.DiscussionsDeleted)
 
 
 class DiscussionAdmin(admin.ModelAdmin):

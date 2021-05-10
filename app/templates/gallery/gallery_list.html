@@ -31,10 +31,10 @@
            href="{% url 'gallery:detail' publication.pk %}">
           <img class="rounded-img-30" src="{{ publication.images.first.thumbnail.url }}" width="200"/>
           <p class="my-2 text-black no-dec">
-            {% if publication.title|length < 25 %}
+            {% if publication.title|length < 20 %}
             {{ publication.title }}
             {% else %}
-            {{ publication.title|slice:"0:25" }}...
+            {{ publication.title|slice:"0:20" }}...
             {% endif %}
           </p>
         </a>

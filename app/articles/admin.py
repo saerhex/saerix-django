@@ -3,6 +3,8 @@ from . import models
 
 
 admin.site.register(models.Feedback)
+admin.site.register(models.ArticlesDeleted)
+admin.site.register(models.FeedbacksDeleted)
 
 
 class ArticleAdmin(admin.ModelAdmin):
