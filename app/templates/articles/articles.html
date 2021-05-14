@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %} Articles {% endblock %}
+
+{% block content %}
+<div class="container vh-100 d-flex flex-column justify-content-between">
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-12 center mt-3">
+      {% for article in articles %}
+      <div class="card my-2 card-bg-dark">
+        <div class="card-body">
+          <h2 class="card-title">{{ article.title }}</h2>
+          <p class="card-text text-muted h6">
+            {{ article.user }} | {{ article.created_on }}
+          </p>
+          <p class="card-text">
+            {{ article.text | slice:":200" }} ...
+          </p>
+          <div class="d-flex justify-content-start">
+            <a href="{% url 'articles:detail' article.pk %}"
+               class="btn btn-blue">
+              Read More &rarr;
+            </a>
+            {% if article.user == user or user.is_superuser %}
+            <button type="button" class="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteArticle{{ article.id }}">
+              Delete
+            </button>
+
+            <div class="modal fade" id="deleteArticle{{ article.id }}" tabindex="-1" role="dialog" aria-labelledby="articleDeleteLabel"
+                 aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="articleDeleteLabel">Are you sure?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure you wanna delete "{{ article.title }}" article?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <form action="{% url 'articles:delete' article.pk %}" method="POST">
+                      {% csrf_token %}
+                      <button type="submit"
+                              class="btn btn-blue">
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <form method="post"
+                  class="ml-2"
+                  action="{% url 'articles:update' article.pk %}">
+              {% csrf_token %}
+              <button class="btn btn-info" type="submit">
+                Update
+              </button>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <h3 class="text-center">No articles posted yet.
+        {% if user.is_authenticated %}
+        <a href="{% url 'articles:create' %}">
+          Create one
+        </a>
+        {% endif %}
+      </h3>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% block pagination %}
+  {% if is_paginated %}
+  <div class="mb-5 d-flex justify-content-between">
+    {% if page_obj.has_previous %}
+    <a class="btn btn-blue text-white"
+       href="{{ request.path }}?page={{ page_obj.previous_page_number }}">
+      <i class="fas fa-angle-left"></i>
+      Back
+    </a>
+    {% else %}
+    <a class="btn btn-blue text-white disabled"
+       href="">
+      <i class="fas fa-angle-left"></i>
+      Back
+    </a>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <a class="btn btn-blue text-white"
+       href="{{ request.path }}?page={{ page_obj.next_page_number }}">
+      <i class="fas fa-angle-right"></i>
+      Next
+    </a>
+    {% else %}
+    <a class="btn btn-blue text-white disabled"
+       href=""
+       disabled>
+      <i class="fas fa-angle-right"></i>
+      Next
+    </a>
+    {% endif %}
+  </div>
+  {% endif %}
+  {% endblock %}
+</div>
+{%endblock%}
