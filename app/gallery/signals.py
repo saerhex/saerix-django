@@ -9,8 +9,7 @@ from hurry.filesize import verbose
 def commentary_delete(sender, instance, using, **kwargs):
     print("Commentary was deleted and saved to reserve table!")
     d = models.CommentariesDeleted()
-    d.user = instance.user.id
-    d.publication = instance.publication.title
+    d.publication = instance.publication.id
     d.text = instance.text
     d.save()
 

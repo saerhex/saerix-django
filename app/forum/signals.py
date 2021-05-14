@@ -7,7 +7,6 @@ from . import models
 def discussion_delete(sender, instance, using, **kwargs):
     print("Discussion was deleted and saved to reserve table!")
     d = models.DiscussionsDeleted()
-    d.user = instance.user.id
     d.title = instance.title
     d.description = instance.description
     d.save()
@@ -32,7 +31,6 @@ def discussion_pre_update(sender, instance, **kwargs):
 def message_delete(sender, instance, using, **kwargs):
     print("Message was deleted and saved to reserve table!")
     d = models.MessagesDeleted()
-    d.user = instance.user.id
-    d.discussion = instance.discussion.title
+    d.discussion = instance.discussion.id
     d.text = instance.text
     d.save()

@@ -42,7 +42,6 @@ class Message(models.Model):
 
 
 class DiscussionsDeleted(models.Model):
-    user = models.IntegerField()
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=5000, null=True)
     deleted_on = models.DateTimeField(auto_now_add=True)
@@ -53,8 +52,7 @@ class DiscussionsDeleted(models.Model):
 
 
 class MessagesDeleted(models.Model):
-    user = models.IntegerField()
-    discussion = models.CharField(max_length=200)
+    discussion = models.IntegerField()
     deleted_on = models.DateTimeField(auto_now_add=True)
     text = RichTextField(null=False, blank=False)
 

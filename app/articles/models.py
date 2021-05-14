@@ -49,7 +49,6 @@ class Feedback(models.Model):
 
 
 class ArticlesDeleted(models.Model):
-    user = models.IntegerField()
     title = models.CharField(max_length=100)
     text = models.TextField(max_length=5000)
     deleted_on = models.DateTimeField(auto_now_add=True)
@@ -60,7 +59,6 @@ class ArticlesDeleted(models.Model):
 
 
 class FeedbacksDeleted(models.Model):
-    user = models.IntegerField()
     article = models.IntegerField()
     mark = models.IntegerField(choices=MARK, default=1)
 

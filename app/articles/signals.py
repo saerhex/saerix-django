@@ -7,7 +7,6 @@ from . import models
 def article_delete(sender, instance, using, **kwargs):
     print("Article saved to reserve table!")
     d = models.ArticlesDeleted()
-    d.user = instance.user.id
     d.title = instance.title
     d.text = instance.text
     d.save()
@@ -31,7 +30,6 @@ def article_pre_update(sender, instance, **kwargs):
 def feedback_delete(sender, instance, using, **kwargs):
     print("Feedbacks deleted and saved to reserve table!")
     d = models.FeedbacksDeleted()
-    d.user = instance.user.id
     d.article = instance.article.id
     d.mark = instance.mark
     d.save()

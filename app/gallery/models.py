@@ -83,8 +83,7 @@ class Commentary(models.Model):
 
 
 class CommentariesDeleted(models.Model):
-    user = models.IntegerField()
-    publication = models.CharField(max_length=50)
+    publication = models.IntegerField()
     text = RichTextField(max_length=5000)
     deleted_on = models.DateTimeField(auto_now_add=True)
 
