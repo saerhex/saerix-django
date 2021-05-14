@@ -67,10 +67,12 @@
              href="{% url 'gallery:list' %}">
             View publications
           </a>
+          {% if user.is_authenticated %}
           <a class="dropdown-item"
              href="{% url 'gallery:create' %}">
             Add publication
           </a>
+          {% endif %}
         </div>
       </li>
       <li class="nav-item dropdown">

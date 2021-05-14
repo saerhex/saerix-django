@@ -1,3 +1,4 @@
+from django.db import connection
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
@@ -126,3 +127,39 @@ def update_article_view(request, pk):
         messages.error(request, 'You don\'t have permission '
                                 'to update this article!')
         return redirect(reverse_lazy('gallery:list'))
+
+
+def lab_22_discussions_view(request):
+    c = connection.cursor()
+    r = ''
+    if request.method == 'POST':
+        form = forms.FirstTaskForm(request.POST)
+        if form.is_valid():
+            try:
+                year = form.cleaned_data.get('date')
+                c.callproc('get_discussions_later', (2019,))
+                r = c.fetchall()
+                return render(request, 'lab22/first.html', {'result': r})
+            finally:
+                c.close()
+    else:
+        form = forms.FirstTaskForm()
+    return render(request, 'lab22/first.html', {'result': r, 'form': form})
+
+
+def lab_22_articles_view(request):
+    c = connection.cursor()
+    r = ''
+    if request.method == 'POST':
+        form = forms.FirstTaskForm(request.POST)
+        if form.is_valid():
+            try:
+                year = form.cleaned_data.get('date')
+                c.callproc('get_articles', (year,))
+                r = c.fetchall()
+                return render(request, 'lab22/second.html', {'result': r})
+            finally:
+                c.close()
+    else:
+        form = forms.FirstTaskForm()
+    return render(request, 'lab22/second.html', {'result': r, 'form': form})

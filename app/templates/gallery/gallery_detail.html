@@ -40,6 +40,7 @@ Publication {{ publication.title }}
             <p class="h6 my-3 text-black-low">
               {{ publication.created_on }}
             </p>
+            {% if publication.user == user or user.is_superuser %}
             <button type="button"
                     class="btn btn-danger mt-5"
                     data-toggle="modal"
@@ -84,6 +85,7 @@ Publication {{ publication.title }}
                 </div>
               </div>
             </div>
+            {% endif %}
           </div>
         </div>
         <h5 class="text-black mt-5 mb-3">

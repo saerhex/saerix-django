@@ -15,3 +15,7 @@ class UpdateArticleForm(forms.ModelForm):
         model = models.Article
         fields = ('title',
                   'text')
+
+
+class FirstTaskForm(forms.Form):
+    date = forms.IntegerField()

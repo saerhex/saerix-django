@@ -15,4 +15,6 @@ urlpatterns = [
          name='update'),
     path('<int:pk>/<str:vote>', views.add_vote,
          name='vote'),
+    path('lab22/first', views.lab_22_discussions_view, name='first_task'),
+    path('lab22/second', views.lab_22_articles_view, name='second_task')
 ]
